@@ -38,8 +38,8 @@ def handle_push(file_basename, components_manager, project_manager):
         if c.base_name == file_basename:
             dst = c
     if not dst:
-        print("{} found in project but not in components dir. Add? (y/n) ".format(file_basename), end="")
-        answer = input()
+        answer = input(
+            "{} found in project but not in components dir. Add? (y/n) ".format(file_basename))
         if answer in ["y", "Y"]:
             src.copy_to(components_manager.components_path)
             dst.commit()

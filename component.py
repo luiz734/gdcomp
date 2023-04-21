@@ -25,8 +25,7 @@ class Component:
             result_add = subprocess.run(
                 git_add_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
 
-            print("Commit Message: ", end="")
-            commit_msg = input()
+            commit_msg = input("Commit message: ")
             git_commit_command = ['git', 'commit', '-m', commit_msg]
             result_commit = subprocess.run(
                 git_commit_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)

@@ -56,6 +56,6 @@ class Component:
             dst_scene_full_path = os.path.join(
                 dst_components_dir, self.relative_path) + ".tscn"
             shutil.copy(self.scene_file_path, dst_scene_full_path)
-        except FileExistsError:
+        except FileNotFoundError:
             print("Skiping missing scene file")
             pass

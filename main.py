@@ -24,7 +24,7 @@ def main():
         actions.handle_add(files, components_manager, project_manager)
 
     elif action == 'push':
-        actions.handle_push("Health", components_manager, project_manager)
+        actions.handle_push("Hahaha", components_manager, project_manager)
 
     elif action == 'list':
         actions.handle_list(project_manager)

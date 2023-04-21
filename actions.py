@@ -20,6 +20,14 @@ def handle_push(file_basename, components_manager, project_manager):
     for c in components_manager.components:
         if c.base_name == file_basename:
             dst = c
-
-    src.copy_to(dst.components_dir)
-    dst.commit()
+    if not dst:
+        print("{} found in project but not in components dir. Add? (y/n) ".format(file_basename), end="")
+        answer = input()
+        if answer in ["y", "Y"]:
+            src.copy_to(components_manager.components_path)
+            dst.commit()
+        else:
+            print("Aborting. Nothing change")
+    else:
+        src.copy_to(dst.components_dir)
+        dst.commit()

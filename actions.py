@@ -1,9 +1,26 @@
 import os
 from component import Component
+from fuzzywuzzy import fuzz, process
 
 
-def handle_add(files, components_manager, project_manager):
-    components_manager.components[11].copy_to(project_manager.components_path)
+def handle_add(file_basename, components_manager, project_manager):
+    possible_targets = components_manager.get_basenames()
+    best_match = process.extractOne(file_basename, possible_targets)[0]
+    if best_match != file_basename:
+        answer = input("Did you mean {}? (y/n) ".format(best_match))
+        if not answer in ["y", "Y"]:
+            print("{basename} not found in {dir}".format(
+                basename=file_basename, dir=components_manager.components_path))
+            print("Run <command> or <command> ls to see all options")
+            exit(1)
+
+    for c in components_manager.components:
+        if c.base_name == best_match:
+            c.copy_to(project_manager.components_path)
+            print("Component {} added".format(best_match))
+            break
+
+    # components_manager.components[11].copy_to(project_manager.components_path)
 
 
 def handle_list(manager):

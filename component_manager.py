@@ -11,7 +11,14 @@ class ComponentManager():
         self.components_path = components_path
         self._init_components()
 
+    def get_basenames(self):
+        return [c.base_name for c in self.components]
+
     def _init_components(self):
+        if not os.path.exists(self.components_path):
+            print("Creating missing dir {}".format(self.components_path))
+            os.makedirs(self.components_path, exist_ok=False)
+
         components_set = set()
         self.get_component_set(component_set=components_set,
                                current_dir=self.components_path)

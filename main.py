@@ -9,8 +9,9 @@ GODOT_COMPONENTS_DIR = "/home/tohru/Drive/godot/godot-resources/components"
 
 
 def main():
+    current_dir = '/home/tohru/tmp/newgodot'
+    # current_dir = os.getcwd()
 
-    current_dir = '/home/tohru/tmp/frog_survivor'
     project_manager = ComponentManager(
         current_dir, os.path.join(current_dir, "components"))
     components_manager = ComponentManager(
@@ -19,15 +20,14 @@ def main():
     args = argparser.parse_args()
 
     action = args.action
-    files = "file1"
     if action == 'add':
-        actions.handle_add(files, components_manager, project_manager)
+        actions.handle_add(args.base_name, components_manager, project_manager)
 
     elif action == 'push':
-        actions.handle_push("Hahaha", components_manager, project_manager)
+        actions.handle_push(args.base_name, components_manager, project_manager)
 
-    elif action == 'list':
-        actions.handle_list(project_manager)
+    elif action == 'ls':
+        actions.handle_list(components_manager)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import os
 from component import Component
+from fuzzywuzzy import fuzz, process
 
 ALLOWED_TYPES = ["gd", "tscn"]
 
@@ -13,6 +14,32 @@ class ComponentManager():
 
     def get_basenames(self):
         return [c.base_name for c in self.components]
+
+    def rebase(self):
+        self._init_components()
+
+    def find_exactly(self, base_name):
+        for c in self.components:
+            if c.base_name == base_name:
+                return c
+        return None
+
+    def find_fuzzy_interactivly(self, base_name):
+        possible_targets = self.get_basenames()
+        best_match = process.extractOne(base_name, possible_targets)[0]
+        if best_match != base_name:
+            answer = input("Did you mean {}? (y/n) ".format(best_match))
+            if not answer in ["y", "Y"]:
+                print("{base_name} not found in {dir}".format(
+                    base_name=base_name, dir=self.components_path))
+                print("Run <command> or <command> ls to see all avaliable components")
+                exit(1)
+
+        for c in self.components:
+            if c.base_name == best_match:
+                return c
+
+    # components_manager.components[11].copy_to(project_manager.components_path)
 
     def _init_components(self):
         if not os.path.exists(self.components_path):

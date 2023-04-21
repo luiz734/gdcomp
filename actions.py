@@ -4,21 +4,9 @@ from fuzzywuzzy import fuzz, process
 
 
 def handle_add(file_basename, components_manager, project_manager):
-    possible_targets = components_manager.get_basenames()
-    best_match = process.extractOne(file_basename, possible_targets)[0]
-    if best_match != file_basename:
-        answer = input("Did you mean {}? (y/n) ".format(best_match))
-        if not answer in ["y", "Y"]:
-            print("{basename} not found in {dir}".format(
-                basename=file_basename, dir=components_manager.components_path))
-            print("Run <command> or <command> ls to see all options")
-            exit(1)
-
-    for c in components_manager.components:
-        if c.base_name == best_match:
-            c.copy_to(project_manager.components_path)
-            print("Component {} added".format(best_match))
-            break
+    comp_to_add = components_manager.find_fuzzy_interactivly(file_basename)
+    comp_to_add.copy_to(project_manager.components_path)
+    print("Component {} added".format(comp_to_add.base_name))
 
     # components_manager.components[11].copy_to(project_manager.components_path)
 
@@ -31,17 +19,21 @@ def handle_list(manager):
 def handle_push(file_basename, components_manager, project_manager):
     src = dst = None
 
-    for c in project_manager.components:
-        if c.base_name == file_basename:
-            src = c
-    for c in components_manager.components:
-        if c.base_name == file_basename:
-            dst = c
+    src = project_manager.find_fuzzy_interactivly(file_basename)
+    dst = components_manager.find_exactly(file_basename)
+
+    if not src:
+        print("{} not found in {}".format(
+            file_basename, project_manager.components_path))
+        exit(1)
+
     if not dst:
         answer = input(
             "{} found in project but not in components dir. Add? (y/n) ".format(file_basename))
         if answer in ["y", "Y"]:
             src.copy_to(components_manager.components_path)
+            components_manager.rebase()
+            dst = components_manager.find_exactly(src.base_name)
             dst.commit()
         else:
             print("Aborting. Nothing change")

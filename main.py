@@ -12,7 +12,7 @@ GODOT_COMPONENTS_DIR = "/home/tohru/Drive/godot/godot-resources/components"
 def main():
     current_dir = "/home/tohru/tmp/newgodot"
     # current_dir = os.getcwd()
-
+    #
     project_manager = ComponentManager(
         current_dir, os.path.join(current_dir, "components")
     )
@@ -28,7 +28,10 @@ def main():
         actions.handle_push(args.base_name, components_manager, project_manager)
 
     elif action == "ls":
-        actions.handle_list(components_manager)
+        if args.project_dir:
+            actions.handle_list(project_manager)
+        else:
+            actions.handle_list(components_manager)
 
     elif action == "config":
         actions.handle_config(components_manager, project_manager)

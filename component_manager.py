@@ -45,8 +45,12 @@ class ComponentManager:
 
     def _init_components(self):
         if not os.path.exists(self.components_dir):
-            print("Creating missing dir {}".format(self.components_dir))
-            os.makedirs(self.components_dir, exist_ok=False)
+            answer = input('Missing "components" dir. Create? (Y/n) ')
+            if answer in ["y", "Y", ""]:
+                os.makedirs(self.components_dir, exist_ok=False)
+            else:
+                print("Treating {} as components dir".format(self.project_dir))
+                self.components_dir = self.project_dir
 
         components_set = set()
         self.get_component_set(

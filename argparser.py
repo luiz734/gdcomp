@@ -10,7 +10,14 @@ def parse_args():
 
     subparsers = parser.add_subparsers(dest="action", help="Action to perform")
 
-    subparsers.add_parser("ls", help="list avaliable components")
+    list_parser = subparsers.add_parser("ls", help="list avaliable components")
+    list_parser.add_argument(
+        "-p",
+        "--project-dir",
+        action="store_true",
+        default=False,
+        help="list components in the project",
+    )
 
     subparsers.add_parser("config", help="show the config options")
 

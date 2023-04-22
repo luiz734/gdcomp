@@ -23,14 +23,18 @@ def handle_push(file_basename, components_manager, project_manager):
     dst = components_manager.find_exactly(file_basename)
 
     if not src:
-        print("{} not found in {}".format(
-            file_basename, project_manager.components_path))
+        print(
+            "{} not found in {}".format(file_basename, project_manager.components_path)
+        )
         exit(1)
 
     if not dst:
         answer = input(
-            "{} found in project but not in components dir. Add? (y/n) ".format(file_basename))
-        if answer in ["y", "Y"]:
+            "{} found in project but not in components dir. Add? (Y/n) ".format(
+                file_basename
+            )
+        )
+        if answer in ["y", "Y", ""]:
             src.copy_to(components_manager.components_path)
             components_manager.rebase()
             dst = components_manager.find_exactly(src.base_name)

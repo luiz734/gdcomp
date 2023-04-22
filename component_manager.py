@@ -5,8 +5,7 @@ from fuzzywuzzy import fuzz, process
 ALLOWED_TYPES = ["gd", "tscn"]
 
 
-class ComponentManager():
-
+class ComponentManager:
     def __init__(self, project_path, components_path) -> None:
         self.project_path = project_path
         self.components_path = components_path
@@ -28,10 +27,13 @@ class ComponentManager():
         possible_targets = self.get_basenames()
         best_match = process.extractOne(base_name, possible_targets)[0]
         if best_match != base_name:
-            answer = input("Did you mean {}? (y/n) ".format(best_match))
-            if not answer in ["y", "Y"]:
-                print("{base_name} not found in {dir}".format(
-                    base_name=base_name, dir=self.components_path))
+            answer = input("Did you mean {}? (Y/n) ".format(best_match))
+            if not answer in ["y", "Y", ""]:
+                print(
+                    "{base_name} not found in {dir}".format(
+                        base_name=base_name, dir=self.components_path
+                    )
+                )
                 print("Run <command> or <command> ls to see all avaliable components")
                 exit(1)
 
@@ -47,20 +49,20 @@ class ComponentManager():
             os.makedirs(self.components_path, exist_ok=False)
 
         components_set = set()
-        self.get_component_set(component_set=components_set,
-                               current_dir=self.components_path)
+        self.get_component_set(
+            component_set=components_set, current_dir=self.components_path
+        )
 
         components = []
         for relative_path in components_set:
-            new_comp = Component(
-                self.project_path, self.components_path, relative_path)
+            new_comp = Component(self.project_path, self.components_path, relative_path)
             components.append(new_comp)
 
         self.components = sorted(components, key=lambda x: x.base_name)
 
     def get_component_set(self, component_set, current_dir):
         os.chdir(current_dir)
-        files_and_dirs = [f for f in os.listdir('.')]
+        files_and_dirs = [f for f in os.listdir(".")]
 
         for f in files_and_dirs:
             item_path = os.path.join(current_dir, f)
@@ -70,8 +72,9 @@ class ComponentManager():
                     base_name = splited[0]
                     filetype = splited[len(splited) - 1]
                 except IndexError:
-                    print("Skiping invalid file in {} or bad naming".format(
-                        current_dir))
+                    print(
+                        "Skiping invalid file in {} or bad naming".format(current_dir)
+                    )
                 if filetype in ALLOWED_TYPES:
                     relpath = os.path.relpath(current_dir, self.components_path)
                     component_set.add(os.path.join(relpath, base_name))

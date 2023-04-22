@@ -6,9 +6,9 @@ ALLOWED_TYPES = ["gd", "tscn"]
 
 
 class ComponentManager:
-    def __init__(self, project_path, components_path) -> None:
-        self.project_path = project_path
-        self.components_path = components_path
+    def __init__(self, project_dir, components_dir) -> None:
+        self.project_dir = project_dir
+        self.components_dir = components_dir
         self._init_components()
 
     def get_basenames(self):
@@ -31,7 +31,7 @@ class ComponentManager:
             if not answer in ["y", "Y", ""]:
                 print(
                     "{base_name} not found in {dir}".format(
-                        base_name=base_name, dir=self.components_path
+                        base_name=base_name, dir=self.components_dir
                     )
                 )
                 print("Run <command> or <command> ls to see all avaliable components")
@@ -41,21 +41,21 @@ class ComponentManager:
             if c.base_name == best_match:
                 return c
 
-    # components_manager.components[11].copy_to(project_manager.components_path)
+    # components_manager.components[11].copy_to(project_manager.components_dir)
 
     def _init_components(self):
-        if not os.path.exists(self.components_path):
-            print("Creating missing dir {}".format(self.components_path))
-            os.makedirs(self.components_path, exist_ok=False)
+        if not os.path.exists(self.components_dir):
+            print("Creating missing dir {}".format(self.components_dir))
+            os.makedirs(self.components_dir, exist_ok=False)
 
         components_set = set()
         self.get_component_set(
-            component_set=components_set, current_dir=self.components_path
+            component_set=components_set, current_dir=self.components_dir
         )
 
         components = []
         for relative_path in components_set:
-            new_comp = Component(self.project_path, self.components_path, relative_path)
+            new_comp = Component(self.project_dir, self.components_dir, relative_path)
             components.append(new_comp)
 
         self.components = sorted(components, key=lambda x: x.base_name)
@@ -76,7 +76,7 @@ class ComponentManager:
                         "Skiping invalid file in {} or bad naming".format(current_dir)
                     )
                 if filetype in ALLOWED_TYPES:
-                    relpath = os.path.relpath(current_dir, self.components_path)
+                    relpath = os.path.relpath(current_dir, self.components_dir)
                     component_set.add(os.path.join(relpath, base_name))
 
             elif os.path.isdir(item_path):

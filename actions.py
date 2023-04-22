@@ -5,10 +5,10 @@ from fuzzywuzzy import fuzz, process
 
 def handle_add(file_basename, components_manager, project_manager):
     comp_to_add = components_manager.find_fuzzy_interactivly(file_basename)
-    comp_to_add.copy_to(project_manager.components_path)
+    comp_to_add.copy_to(project_manager.components_dir)
     print("Component {} added".format(comp_to_add.base_name))
 
-    # components_manager.components[11].copy_to(project_manager.components_path)
+    # components_manager.components[11].copy_to(project_manager.components_dir)
 
 
 def handle_list(manager):
@@ -24,7 +24,7 @@ def handle_push(file_basename, components_manager, project_manager):
 
     if not src:
         print(
-            "{} not found in {}".format(file_basename, project_manager.components_path)
+            "{} not found in {}".format(file_basename, project_manager.components_dir)
         )
         exit(1)
 
@@ -35,7 +35,7 @@ def handle_push(file_basename, components_manager, project_manager):
             )
         )
         if answer in ["y", "Y", ""]:
-            src.copy_to(components_manager.components_path)
+            src.copy_to(components_manager.components_dir)
             components_manager.rebase()
             dst = components_manager.find_exactly(src.base_name)
             dst.commit()
@@ -44,3 +44,9 @@ def handle_push(file_basename, components_manager, project_manager):
     else:
         src.copy_to(dst.components_dir)
         dst.commit()
+
+
+def handle_config(components_manager, project_manager):
+    print("Components: {}".format(components_manager.components_dir))
+    print("Current Project: {}".format(project_manager.project_dir))
+    print("Current Components: {}".format(project_manager.components_dir))

@@ -11,7 +11,7 @@ GODOT_COMPONENTS_DIR = "/home/tohru/Drive/godot/godot-resources/components"
 
 def main():
     current_dir = "/home/tohru/tmp/newgodot"
-    # current_dir = os.getcwd()
+    current_dir = os.getcwd()
     #
     project_manager = ComponentManager(
         current_dir, os.path.join(current_dir, "components")

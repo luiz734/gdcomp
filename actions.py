@@ -20,7 +20,7 @@ def handle_push(file_basename, components_manager, project_manager):
     src = dst = None
 
     src = project_manager.find_fuzzy_interactivly(file_basename)
-    dst = components_manager.find_exactly(file_basename)
+    dst = components_manager.find_exactly(src.base_name)
 
     if not src:
         print(
@@ -31,7 +31,7 @@ def handle_push(file_basename, components_manager, project_manager):
     if not dst:
         answer = input(
             "{} found in project but not in components dir. Add? (Y/n) ".format(
-                file_basename
+                src.base_name
             )
         )
         if answer in ["y", "Y", ""]:

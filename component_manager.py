@@ -25,7 +25,15 @@ class ComponentManager:
 
     def find_fuzzy_interactivly(self, base_name):
         possible_targets = self.get_basenames()
-        best_match = process.extractOne(base_name, possible_targets)[0]
+        try:
+            best_match = process.extractOne(base_name, possible_targets)[0]
+        except TypeError:
+            print(
+                "Nothing matches {}. Run <command> ls to see all avaliable components".format(
+                    base_name
+                )
+            )
+            exit(1)
         if best_match != base_name:
             answer = input("Did you mean {}? (Y/n) ".format(best_match))
             if not answer in ["y", "Y", ""]:
@@ -45,12 +53,8 @@ class ComponentManager:
 
     def _init_components(self):
         if not os.path.exists(self.components_dir):
-            answer = input('Missing "components" dir. Create? (Y/n) ')
-            if answer in ["y", "Y", ""]:
-                os.makedirs(self.components_dir, exist_ok=False)
-            else:
-                print("Treating {} as components dir".format(self.project_dir))
-                self.components_dir = self.project_dir
+            print("Creating missing dir {}".format(self.components_dir))
+            os.makedirs(self.components_dir, exist_ok=False)
 
         components_set = set()
         self.get_component_set(

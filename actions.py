@@ -46,7 +46,9 @@ def handle_push(file_basename, components_manager, project_manager):
         dst.commit()
 
 
-def handle_config(components_manager, project_manager):
+def handle_config(config, components_manager, project_manager):
     print("Components: {}".format(components_manager.components_dir))
     print("Current Project: {}".format(project_manager.project_dir))
     print("Current Components: {}".format(project_manager.components_dir))
+    print(f"\nConfig File: {config.path}\n")
+    print(f"{config.get_all_as_str()}")

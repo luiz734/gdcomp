@@ -31,6 +31,6 @@ def parse_args():
         "base_name", help="update the component to match the one on the current project"
     )
 
-    parser.set_defaults(action="ls")
+    parser.set_defaults(action="ls", project_dir=False)
 
     return parser.parse_args()

@@ -46,7 +46,7 @@ class Component:
         except subprocess.CalledProcessError as e:
             print("Git command failed with return code:", e.returncode)
             print("Git command error:", e.stderr)
-            tprint("(did you make any changes before commit?)")
+            print("(did you make any changes before commit?)")
 
     def copy_to(self, dst_components_dir):
         if not os.path.exists(dst_components_dir):

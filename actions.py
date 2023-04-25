@@ -8,8 +8,6 @@ def handle_add(file_basename, components_manager, project_manager):
     comp_to_add.copy_to(project_manager.components_dir)
     print("Component {} added".format(comp_to_add.base_name))
 
-    # components_manager.components[11].copy_to(project_manager.components_dir)
-
 
 def handle_list(manager):
     for c in manager.components:
@@ -18,7 +16,6 @@ def handle_list(manager):
 
 def handle_push(file_basename, components_manager, project_manager):
     src = dst = None
-
     src = project_manager.find_fuzzy_interactivly(file_basename)
     dst = components_manager.find_exactly(src.base_name)
 
@@ -47,8 +44,16 @@ def handle_push(file_basename, components_manager, project_manager):
 
 
 def handle_config(config, components_manager, project_manager):
-    print("Components: {}".format(components_manager.components_dir))
-    print("Current Project: {}".format(project_manager.project_dir))
-    print("Current Components: {}".format(project_manager.components_dir))
-    print(f"\nConfig File: {config.path}\n")
-    print(f"{config.get_all_as_str()}")
+    display_msg = """
+Components: {comp_dir}
+Current Project: {proj_dir}
+Current Components: {proj_comp_dir}
+\nConfig File: {config_path}
+{config_content}""".format(
+        comp_dir=components_manager.components_dir,
+        proj_dir=project_manager.project_dir,
+        proj_comp_dir=project_manager.components_dir,
+        config_path=config.path,
+        config_content=config.get_all_as_str(),
+    )
+    print(display_msg)

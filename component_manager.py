@@ -81,7 +81,9 @@ class ComponentManager:
                     filetype = splited[len(splited) - 1]
                 except IndexError:
                     print(
-                        "Skiping invalid file in {} or bad naming".format(current_dir)
+                        "Skiping {file} invalid file in {dir} or bad naming".format(
+                            file=f, dir=current_dir
+                        )
                     )
                 if filetype in ALLOWED_TYPES:
                     relpath = os.path.relpath(current_dir, self.components_dir)

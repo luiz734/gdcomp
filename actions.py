@@ -1,17 +1,18 @@
 import os
 from component import Component
 from fuzzywuzzy import fuzz, process
+import display
 
 
 def handle_add(file_basename, components_manager, project_manager):
     comp_to_add = components_manager.find_fuzzy_interactivly(file_basename)
     comp_to_add.copy_to(project_manager.components_dir)
-    print("Component {} added".format(comp_to_add.base_name))
+    display.success("Component {} added".format(comp_to_add.base_name))
 
 
 def handle_list(manager):
     for c in manager.components:
-        print("{}".format(c.base_name))
+        display.text("{}".format(c.base_name))
 
 
 def handle_push(file_basename, components_manager, project_manager):
@@ -20,7 +21,7 @@ def handle_push(file_basename, components_manager, project_manager):
     dst = components_manager.find_exactly(src.base_name)
 
     if not src:
-        print(
+        display.warn(
             "{} not found in {}".format(file_basename, project_manager.components_dir)
         )
         exit(1)
@@ -37,7 +38,7 @@ def handle_push(file_basename, components_manager, project_manager):
             dst = components_manager.find_exactly(src.base_name)
             dst.commit()
         else:
-            print("Aborting. Nothing change")
+            display.warn("Aborting. Nothing change")
     else:
         src.copy_to(dst.components_dir)
         dst.commit()
@@ -56,4 +57,4 @@ Current Components: {proj_comp_dir}
         config_path=config.path,
         config_content=config.get_all_as_str(),
     )
-    print(display_msg)
+    display.text(display_msg)

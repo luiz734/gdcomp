@@ -1,4 +1,5 @@
 from gdcomp import GDComp
+import display
 
 
 if __name__ == "__main__":

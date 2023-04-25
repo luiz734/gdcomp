@@ -1,6 +1,7 @@
 import os
 from component import Component
 from fuzzywuzzy import fuzz, process
+import display
 
 ALLOWED_TYPES = ["gd", "tscn"]
 
@@ -28,7 +29,7 @@ class ComponentManager:
         try:
             best_match = process.extractOne(base_name, possible_targets)[0]
         except TypeError:
-            print(
+            display.text(
                 "Nothing matches {}. Run <command> ls to see all avaliable components".format(
                     base_name
                 )
@@ -37,12 +38,14 @@ class ComponentManager:
         if best_match != base_name:
             answer = input("Did you mean {}? (Y/n) ".format(best_match))
             if not answer in ["y", "Y", ""]:
-                print(
+                display.text(
                     "{base_name} not found in {dir}".format(
                         base_name=base_name, dir=self.components_dir
                     )
                 )
-                print("Run <command> or <command> ls to see all avaliable components")
+                display.text(
+                    "Run <command> or <command> ls to see all avaliable components"
+                )
                 exit(1)
 
         for c in self.components:
@@ -53,7 +56,7 @@ class ComponentManager:
 
     def _init_components(self):
         if not os.path.exists(self.components_dir):
-            print("Creating missing dir {}".format(self.components_dir))
+            display.warn("Creating missing dir {}".format(self.components_dir))
             os.makedirs(self.components_dir, exist_ok=False)
 
         components_set = set()
@@ -80,7 +83,7 @@ class ComponentManager:
                     base_name = splited[0]
                     filetype = splited[len(splited) - 1]
                 except IndexError:
-                    print(
+                    display.warn(
                         "Skiping {file} invalid file in {dir} or bad naming".format(
                             file=f, dir=current_dir
                         )
@@ -93,4 +96,4 @@ class ComponentManager:
                 subdir_path = current_dir + "/{}".format(f)
                 self.get_component_set(component_set, subdir_path)
             else:
-                print("this shouldnt be printed")
+                display.warn("this shouldnt be display.texted")

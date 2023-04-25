@@ -1,6 +1,7 @@
 import os
 import shutil
 import subprocess
+import display
 
 
 class Component:
@@ -41,12 +42,12 @@ class Component:
                 check=True,
             )
 
-            print("{} updated!".format(self.base_name))
+            display.success("{} updated!".format(self.base_name))
 
         except subprocess.CalledProcessError as e:
-            print("Git command failed with return code:", e.returncode)
-            print("Git command error:", e.stderr)
-            print("(did you make any changes before commit?)")
+            display.text(f"Git command failed with return code: {e.returncode}")
+            display.text(f"Git command error:, {e.stderr}")
+            display.warn("(did you make any changes before commit?)")
 
     def copy_to(self, dst_components_dir):
         if not os.path.exists(dst_components_dir):
@@ -70,5 +71,5 @@ class Component:
             )
             shutil.copy(self.scene_file_path, dst_scene_full_path)
         except FileNotFoundError:
-            print("Skiping missing scene file")
+            display.text("Skiping missing scene file")
             pass

@@ -3,7 +3,7 @@ import os
 
 DEFAULT_CONFIG = """
 [global]
-components_dir = /home/{username}/Drive/godot/godot-resources/components
+components_dir = /home/{username}/godot_components
 """
 
 

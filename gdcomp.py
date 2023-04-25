@@ -41,7 +41,6 @@ class GDComp:
                 actions.handle_list(self.project_manager, to_highlight)
             else:
                 to_highlight = self.project_manager.get_basenames()
-                to_highlight = ["Movement"]
                 actions.handle_list(self.components_manager, to_highlight)
 
         # gdcomp config

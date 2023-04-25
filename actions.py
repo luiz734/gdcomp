@@ -10,9 +10,12 @@ def handle_add(file_basename, components_manager, project_manager):
     display.success("Component {} added".format(comp_to_add.base_name))
 
 
-def handle_list(manager):
+def handle_list(manager, to_highlight):
     for c in manager.components:
-        display.text("{}".format(c.base_name))
+        if c.base_name in to_highlight:
+            display.bright(f"{c.base_name}")
+        else:
+            display.dimmed(f"{c.base_name}")
 
 
 def handle_push(file_basename, components_manager, project_manager):

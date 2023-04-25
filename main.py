@@ -1,4 +1,5 @@
 from component_manager import ComponentManager
+from config import Config
 import argparser
 import actions
 import os
@@ -6,17 +7,17 @@ import os
 # import remove
 # import push
 
-GODOT_COMPONENTS_DIR = "/home/tohru/Drive/godot/godot-resources/components"
-
 
 def main():
+    config = Config()
+
     current_dir = "/home/tohru/tmp/newgodot"
     current_dir = os.getcwd()
     #
     project_manager = ComponentManager(
         current_dir, os.path.join(current_dir, "components")
     )
-    components_manager = ComponentManager(GODOT_COMPONENTS_DIR, GODOT_COMPONENTS_DIR)
+    components_manager = ComponentManager(config.components_dir, config.components_dir)
 
     args = argparser.parse_args()
 

@@ -8,7 +8,7 @@ import os
 class GDComp:
     def __init__(self) -> None:
         self.config = Config()
-        # current_dir = "/home/tohru/tmp/newgodot"
+
         current_dir = os.getcwd()
 
         self.project_manager = ComponentManager(
